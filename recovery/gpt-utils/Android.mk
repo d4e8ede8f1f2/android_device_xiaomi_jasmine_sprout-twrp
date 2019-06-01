@@ -1,0 +1,35 @@
+
+LOCAL_PATH := $(call my-dir)
+
+gpt_utils_common_cflags := -Wall -Werror
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := gpt-utils.cpp
+ifeq ($(TARGET_COMPILE_WITH_MSM_KERNEL),true)
+LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+endif
+LOCAL_SHARED_LIBRARIES := liblog libz
+LOCAL_MODULE := libgptutils
+LOCAL_MODULE_OWNER := qti
+LOCAL_CFLAGS := $(gpt_utils_common_cflags)
+include $(BUILD_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := gpt-utils.cpp
+ifeq ($(TARGET_COMPILE_WITH_MSM_KERNEL),true)
+LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+endif
+LOCAL_SHARED_LIBRARIES += liblog libcutils libz
+LOCAL_EXPORT_HEADER_LIBRARY_HEADERS := libgptutils_headers
+LOCAL_MODULE := libgptutils
+LOCAL_MODULE_OWNER := qti
+LOCAL_CFLAGS := $(gpt_utils_common_cflags)
+LOCAL_PROPRIETARY_MODULE := true
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libgptutils_headers
+LOCAL_EXPORT_C_INCLUDE_DIRS:=$(LOCAL_PATH)
+include $(BUILD_HEADER_LIBRARY)
