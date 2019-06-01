@@ -1,22 +1,37 @@
 
-# Inherit some common Omni stuff.
-$(call inherit-product, vendor/omni/config/common.mk)
-$(call inherit-product, build/target/product/embedded.mk)
+# Release name
+PRODUCT_RELEASE_NAME := jasmine_sprout
 
-## Device identifier. This must come after all inclusions
+# Inherit some common Omni stuff.
+$(call inherit-product, build/target/product/embedded.mk)
+$(call inherit-product, vendor/omni/config/common.mk)
+
+# Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := jasmine_sprout
 PRODUCT_NAME := omni_jasmine_sprout
-PRODUCT_BRAND := Xiaomi
+PRODUCT_BRAND := xiaomi
 PRODUCT_MODEL := Mi A2
 PRODUCT_MANUFACTURER := Xiaomi
 
-# A/B
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=jasmine_sprout \
+    BUILD_PRODUCT=jasmine_sprout \
+    TARGET_DEVICE=jasmine_sprout
+
+# HACK: Set vendor patch level
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.security_patch=2025-12-31
+
+# A/B updater
 AB_OTA_UPDATER := true
 
 AB_OTA_PARTITIONS += \
     boot \
     system \
     vendor
+
+PRODUCT_PACKAGES += \
+    bootctrl.sdm660
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -25,35 +40,18 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_system=true
 
 PRODUCT_PACKAGES += \
-    otapreopt_script
-
-# Boot control
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service \
-    bootctrl.sdm660 \
-
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl
+    otapreopt_script \
+    cppreopts.sh \
+    update_engine \
+    update_verifier
 
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.sdm660 \
-    libcutils \
     libgptutils \
-    libz
+    libz \
+    libcutils
 
-# Update engine
+# Boot control HAL
 PRODUCT_PACKAGES += \
-    update_engine \
-    update_engine_sideload \
-    update_verifier
-
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client
-
-# Time Zone data for recovery
-PRODUCT_COPY_FILES += \
-    system/timezone/output_data/iana/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.keystore=sdm660
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service \

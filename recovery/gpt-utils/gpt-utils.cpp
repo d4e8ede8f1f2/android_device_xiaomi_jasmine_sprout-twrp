@@ -10,8 +10,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <scsi/ufs/ioctl.h>
-#include <scsi/ufs/ufs.h>
+#include "ioctl.h"
+#include "ufs.h"
 #include <unistd.h>
 #include <linux/fs.h>
 #include <limits.h>
@@ -165,11 +165,11 @@ static uint8_t *gpt_pentry_seek(const char *ptn_name,
 
     for (pentry_name = (char *) (pentries_start + PARTITION_NAME_OFFSET);
          pentry_name < (char *) pentries_end; pentry_name += pentry_size) {
-        char name8[MAX_GPT_NAME_SIZE];
+        char name8[MAX_GPT_NAME_SIZE / 2];
         unsigned i;
 
         /* Partition names in GPT are UTF-16 - ignoring UTF-16 2nd byte */
-        for (i = 0; i < sizeof(name8) / 2; i++)
+        for (i = 0; i < sizeof(name8); i++)
             name8[i] = pentry_name[i * 2];
         if (!strncmp(ptn_name, name8, len))
             if (name8[len] == 0 || !strcmp(&name8[len], BAK_PTN_NAME_EXT))
@@ -716,7 +716,7 @@ int prepare_partitions(enum boot_update_stage stage, const char *dev_path)
     int r = 0;
     int fd = -1;
     int is_ufs = gpt_utils_is_ufs_device();
-    enum gpt_state gpt_prim, gpt_second;
+    enum gpt_state gpt_prim, gpt_second = GPT_OK;
     enum boot_update_stage internal_stage;
     struct stat xbl_partition_stat;
 
@@ -1065,7 +1065,7 @@ int gpt_utils_get_partition_map(vector<string>& ptn_list,
         map<string, vector<string>>::iterator it;
         if (ptn_list.size() < 1) {
                 fprintf(stderr, "%s: Invalid ptn list\n", __func__);
-                goto error;
+                return -1;
         }
         //Go through the passed in list
         for (uint32_t i = 0; i < ptn_list.size(); i++)
@@ -1092,8 +1092,6 @@ int gpt_utils_get_partition_map(vector<string>& ptn_list,
                 memset(devpath, '\0', sizeof(devpath));
         }
         return 0;
-error:
-        return -1;
 }
 
 //Get the block size of the disk represented by decsriptor fd
@@ -1122,7 +1120,7 @@ static int gpt_set_header(uint8_t *gpt_header, int fd,
                 enum gpt_instance instance)
 {
         uint32_t block_size = 0;
-        off64_t gpt_header_offset = 0;
+        off_t gpt_header_offset = 0;
         if (!gpt_header || fd < 0) {
                 ALOGE("%s: Invalid arguments",
                                 __func__);
@@ -1142,7 +1140,7 @@ static int gpt_set_header(uint8_t *gpt_header, int fd,
                 ALOGE("%s: Failed to get gpt header offset",__func__);
                 goto error;
         }
-        ALOGI("%s: Writing back header to offset %" PRIi64, __func__,
+        ALOGI("%s: Writing back header to offset %ld", __func__,
                 gpt_header_offset);
         if (blk_rw(fd, 1, gpt_header_offset, gpt_header, block_size)) {
                 ALOGE("%s: Failed to write back GPT header", __func__);
