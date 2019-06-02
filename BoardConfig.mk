@@ -74,6 +74,7 @@ TARGET_RECOVERY_WIPE := $(LOCAL_PATH)/recovery/root/etc/recovery.wipe
 
 # Recovery
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
+RECOVERY_SDCARD_ON_DATA := true
 
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0
