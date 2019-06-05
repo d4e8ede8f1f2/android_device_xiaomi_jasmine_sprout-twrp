@@ -28,5 +28,5 @@ lunch omni_jasmine_sprout-eng
 make -j4 recoveryimage
 ```
 
-### How to compile
+### Credits
 Thanks for the help to @mauronofrio
