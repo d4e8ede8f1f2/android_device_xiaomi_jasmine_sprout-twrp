@@ -30,3 +30,4 @@ make -j4 recoveryimage
 
 ### Credits
 Thanks for the help to @mauronofrio
+Also thanks to the most active tester, from the forum 4PDA - tokar77

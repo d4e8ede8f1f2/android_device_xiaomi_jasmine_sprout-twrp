@@ -17,6 +17,7 @@ TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := kryo
+TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
@@ -29,6 +30,8 @@ ENABLE_SCHEDBOOST := true
 
 # Kernel
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz-dtb
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
 
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8
 BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0
@@ -97,7 +100,7 @@ TW_INCLUDE_CRYPTO_FBE := true
 
 # TWRP Configuration
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
-TW_DEVICE_VERSION := 1
+TW_DEVICE_VERSION := 2
 TW_EXTRA_LANGUAGES := true
 #TW_HAS_EDL_MODE := true
 TW_INCLUDE_NTFS_3G := true

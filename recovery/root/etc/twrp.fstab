@@ -2,7 +2,7 @@
 # Mount point           FStype     Device              Device2                 Flags
 
 /boot                   emmc       /dev/block/bootdevice/by-name/boot          flags=slotselect;backup=1;flashimg=1;display="Boot"
-/system_root            ext4       /dev/block/bootdevice/by-name/system        flags=slotselect;backup=1;display="System"
+/system                 ext4       /dev/block/bootdevice/by-name/system        flags=slotselect;backup=1;display="System"
 /system_image           emmc       /dev/block/bootdevice/by-name/system        flags=slotselect;backup=1;flashimg=1;display="System Image"
 /vendor                 ext4       /dev/block/bootdevice/by-name/vendor        flags=slotselect;backup=1;display="Vendor"
 /vendor_image           emmc       /dev/block/bootdevice/by-name/vendor        flags=slotselect;backup=1;flashimg=1;display="Vendor Image"
