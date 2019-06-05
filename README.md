@@ -27,3 +27,6 @@ Check here: https://github.com/d4e8ede8f1f2/android_kernel_xiaomi_jasmine_sprout
 lunch omni_jasmine_sprout-eng
 make -j4 recoveryimage
 ```
+
+### How to compile
+Thanks for the help to @mauronofrio

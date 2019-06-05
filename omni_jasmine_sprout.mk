@@ -20,7 +20,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 
 # HACK: Set vendor patch level
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2025-12-31
+    ro.vendor.build.security_patch=2099-12-31
 
 # A/B updater
 AB_OTA_UPDATER := true
