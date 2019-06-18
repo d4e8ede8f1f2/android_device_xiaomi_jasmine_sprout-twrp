@@ -12,7 +12,7 @@
 
 /firmware               vfat       /dev/block/bootdevice/by-name/modem         flags=slotselect;backup=1;display="Firmware";mounttodecrypt;fsflags=context=u:object_r:firmware_file:s0
 /modem                  emmc       /dev/block/bootdevice/by-name/modem         flags=slotselect;backup=1;flashimg=1;display="Modem"
-/bluetooth              emmc       /dev/block/bootdevice/by-name/bluetooth     flags=slotselect;backup=1;subpartitionof=/modem
+/bt_firmware            emmc       /dev/block/bootdevice/by-name/bluetooth     flags=slotselect;backup=1;subpartitionof=/modem
 /dsp                    emmc       /dev/block/bootdevice/by-name/dsp           flags=slotselect;backup=1;subpartitionof=/modem
 /persist                ext4       /dev/block/bootdevice/by-name/persist       flags=backup=1;display="Persist"
 /persist_image          emmc       /dev/block/bootdevice/by-name/persist       flags=flashimg=1;display="Persist"
