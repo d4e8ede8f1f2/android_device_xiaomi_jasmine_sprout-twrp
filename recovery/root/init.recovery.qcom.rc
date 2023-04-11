@@ -10,17 +10,40 @@ on fs
     install_keyring
 
 # Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
-service sbinqseecomd /sbin/qseecomd
+service qseecomd /vendor/bin/qseecomd
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service prepdecrypt /sbin/prepdecrypt.sh
-    oneshot
-    disabled
+service time_daemon /vendor/bin/time_daemon
     user root
     group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service boot-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service-qti
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service keymaster-3-0 /vendor/bin/hw/android.hardware.keymaster@3.0-service-qti
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service logd /sbin/logd
+    user root
+    group root
+    disabled
     seclabel u:r:recovery:s0
 
 service hwservicemanager /sbin/hwservicemanager
@@ -28,12 +51,6 @@ service hwservicemanager /sbin/hwservicemanager
     group root
     disabled
     onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
-
-service boot-1-0 /sbin/android.hardware.boot@1.0-service
-    user root
-    group root
-    disabled
     seclabel u:r:recovery:s0
 
 service servicemanager /sbin/servicemanager
@@ -56,40 +73,18 @@ service keystore /sbin/keystore /tmp/misc/keystore
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
+service prepdecrypt /sbin/prepdecrypt.sh
+    oneshot
+    disabled
     user root
     group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service logd /sbin/logd
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service time_daemon /sbin/time_daemon
-    user root
-    group root
-    disabled
     seclabel u:r:recovery:s0
 
 on boot
     setprop sys.usb.config adb
 
-    # save battery by switching to interactive once booted
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-
 on init
+    write /sys/class/backlight/panel0-backlight/brightness 200
     start logd
     start hwservicemanager
     start boot-1-0
@@ -98,19 +93,22 @@ on init
     #setprop crypto.ready 1
 
 on property:crypto.ready=0
-    stop sbinqseecomd
+    stop qseecomd
     stop keymaster-3-0
     stop gatekeeper-1-0
     stop servicemanager
 
 on property:crypto.ready=1
-    start sbinqseecomd
+    start qseecomd
 
 on property:vendor.sys.listeners.registered=true
     start keymaster-3-0
     start gatekeeper-1-0
     start servicemanager
     restart time_daemon
+
+on property:ro.boot.usbcontroller=*
+    setprop sys.usb.controller ${ro.boot.usbcontroller}
 
 on property:sys.usb.config=mtp,adb
     restart time_daemon

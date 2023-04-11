@@ -19,7 +19,7 @@ Front Camera | 20 MP
 ![Device Picture](https://static-eu.insales.ru/images/products/1/6809/170998425/20180723211747.jpg)
 
 ### Kernel Source
-Check here: https://github.com/d4e8ede8f1f2/android_kernel_xiaomi_jasmine_sprout/tree/TWRP-9.0
+Check here: https://github.com/d4e8ede8f1f2/android_kernel_xiaomi_jasmine_sprout/tree/twrp-9.0
 
 ### How to compile
 ```sh

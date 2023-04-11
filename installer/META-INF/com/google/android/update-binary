@@ -31,10 +31,9 @@ extract() {
 	unzip -o "$1" -d "$2" || abort "Failed to extract zip to $2!"
 }
 
-print "########################################"
-print "#   TWRP installer for Xiaomi Mi A2    #"
-print "#            by d4e8ede8f1f2           #"
-print "########################################"
+print "#########################################"
+print "#    TWRP installer for Xiaomi Mi A2    #"
+print "#########################################"
 print
 
 # unpack the installer
