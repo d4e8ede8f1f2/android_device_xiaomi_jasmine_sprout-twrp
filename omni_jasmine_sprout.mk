@@ -19,7 +19,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE=jasmine_sprout
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2099-12-31 \
+    #ro.vendor.build.security_patch=2099-12-31 \
     ro.bionic.ld.warning=0 \
     ro.treble.enabled=true
 
@@ -41,4 +41,7 @@ PRODUCT_PACKAGES += \
     otapreopt_script \
     cppreopts.sh \
     update_engine \
-    update_verifier
+    update_engine_sideload \
+    update_verifier \
+    qcom_decrypt \
+    qcom_decrypt_fbe

@@ -8,7 +8,7 @@ relink()
  rm ${1}_old
 }
 
-cd hw
+cd ./recovery/root/vendor/bin/hw
 relink android.hardware.boot@1.0-service
 relink android.hardware.gatekeeper@1.0-service-qti
 relink android.hardware.keymaster@3.0-service-qti
